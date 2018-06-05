@@ -1,37 +1,14 @@
 import React, { Component } from 'react';
-import todoList from './todos.json';
-import './App.css';
-
-class TodoItem extends Component {
-
-  render() {
-    return (
-      <li className={this.props.completed ? 'completed' : ''}>
-        <div className="view">
-          <input onChange={this.props.onCompleted} className="toggle" type="checkbox" checked={this.props.completed} />
-            <label>{this.props.text}</label>
-            <button onClick={this.props.onDelete} className="destroy"></button>
-				</div>
-			</li>
-    );
-  }
-}
-
-class TodoList extends Component {
-
-  render() {
-    return (
-      <ul className="todo-list">
-        {this.props.todos.map( (todo, i) => <TodoItem key={i} text={todo.title} completed={todo.completed} onDelete={this.props.onDelete(i)} onCompleted={this.props.onCompleted(i)} />)}  
-			</ul>
-    );
-  }
-}
+import { Link, Route, Switch } from 'react-router-dom';
+import todoList from '../todos.json';
+import TodoList from './TodoList';
+import '../App.css';
 
 class App extends Component {
   state = {
     todos: todoList,
-    text: ''
+    text: '',
+    currentTab: 'all'
   }
 
   // Data Structure of a New Todo (can also view ./todos.json)
@@ -92,7 +69,12 @@ class App extends Component {
 			  </header>
           {/* <!-- This section should be hidden by default and shown when there are todos --> */}
 			  <section className="main">
-          <TodoList todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} />
+          {/* <TodoList todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} /> */}
+          <Switch>
+            <Route exact path="/" render={() => <TodoList todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} /> }/>
+            {/* <Route exact path="/" component={TodoList}/>
+            <Route exact path="/" component={TodoList}/> */}
+          </Switch>
 			  </section>
         {/* <!-- This footer should hidden by default and shown when there are todos --> */}
 			  <footer className="footer">
@@ -100,19 +82,19 @@ class App extends Component {
 				  <span className="todo-count"><strong>0</strong> item(s) left</span>
           <ul className="filters">
             <li>
-              <a href="#/">
+              <Link to="/">
                 All
-							</a>
+							</Link>
             </li>
             <li>
-              <a href="#/active">
+              <Link to="/active">
                 Active
-							</a>
+							</Link>
             </li>
             <li>
-              <a href="#/completed">
+              <Link to="/completed">
                 Completed
-							</a>
+							</Link>
             </li>
           </ul>
 				  {/* <!-- Hidden if no completed items are left ↓ --> */}
