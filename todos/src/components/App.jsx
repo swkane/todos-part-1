@@ -71,7 +71,9 @@ class App extends Component {
 			  <section className="main">
           {/* <TodoList todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} /> */}
           <Switch>
-            <Route exact path="/" render={() => <TodoList todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} /> }/>
+            <Route exact path="/" render={() => <TodoList filter="all" todos={this.state.todos} onDelete={this.handleDelete} onCompleted={this.handleComplete} />} />
+            <Route exact path="/active" render={() => <TodoList filter="active" todos={this.state.todos.filter( todo => !todo.completed)} onDelete={this.handleDelete} onCompleted={this.handleComplete} />} />
+            <Route exact path="/completed" render={() => <TodoList filter="complete" todos={this.state.todos.filter( todo => todo.completed)} onDelete={this.handleDelete} onCompleted={this.handleComplete} />} />
             {/* <Route exact path="/" component={TodoList}/>
             <Route exact path="/" component={TodoList}/> */}
           </Switch>
